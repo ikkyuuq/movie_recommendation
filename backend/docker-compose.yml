@@ -1,0 +1,32 @@
+version: "3"
+services:
+  moviedb_server:
+    container_name: moviedb_server
+    restart: always
+    build: .
+    ports:
+      - "8000:8000"
+  db:
+    image: mysql:latest
+    container_name: db
+    restart: always
+    volumes:
+      - mysqldatavolume: ./vol/
+    environment:
+      MYSQL_ROOT_PASSWORD: moviedb@password
+      MYSQL_DATABASE: moviedb
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASS: moviedb@password
+volumes:
+  mysqldatavolume:
