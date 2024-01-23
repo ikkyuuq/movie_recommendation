@@ -77,7 +77,8 @@
 
 6. ทดสอบ Endpoint ของ API
    - เข้า [http://localhost:5000/getmovies](http://localhost:5000/getmovies) หรือ endpoint อื่นๆ
-   - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/4ffdfdd2-6f0a-47c9-bef6-93c8eea63faf)
+   - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/ac20a428-27f8-4a0f-9ad7-5357574d22e8)
+   - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/f1fe1c12-0b15-4811-b7b9-944516fd27a2)
 
 ## ไฟล์
 
