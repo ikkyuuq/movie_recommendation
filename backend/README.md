@@ -77,15 +77,15 @@
 
 6. ทดสอบ Endpoint ของ API
    - เข้า [http://localhost:5000/getmovies](http://localhost:5000/getmovies) หรือ endpoint อื่นๆ
+   - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/ac20a428-27f8-4a0f-9ad7-5357574d22e8)
+   - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/f1fe1c12-0b15-4811-b7b9-944516fd27a2)
 
 ## ไฟล์
 
 ### app.py
 
-ไฟล์นี้มีรหัสสำหรับสร้าง endpoint ใหม่ที่ดึงข้อมูลจากฐานข้อมูล ใช้เมทอดที่ตรงกับการเรียกใช้ฟังก์ชันใน `models.py`
+สำหรับสร้าง endpoint ใหม่ที่ดึงข้อมูลจากฐานข้อมูล ใช้เมทอดที่ตรงกับการเรียกใช้ฟังก์ชันใน `models.py`
 
 ### models.py
 
-ไฟล์นี้มีฟังก์ชันสำหรับการดึงข้อมูลจากฐานข้อมูลโดยใช้วิธี HTTP ต่างๆ (GET, POST, PUT, DELETE)
-
-สามารถสำรวจและปรับแต่งไฟล์เหล่านี้ตามความต้องการของทีมได้โดยอิสระ หากมีคำถามหรือปัญหาใด ๆ โปรดอ่านเอกสารหรือติดต่อผู้ดูแลโปรเจค
+สำหรับสร้างฟังก์ชันการดึงข้อมูลจากฐานข้อมูลโดยใช้วิธีต่างๆ (GET, POST, PUT, DELETE)
