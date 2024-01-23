@@ -1,4 +1,4 @@
-# Movie API
+![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/1c99076e-b8d5-49cb-aba5-c8deed40df5e)# Movie API
 
 เอกสารประกอบการใช้งานของ Movie API นี้ API นี้สามารถให้ข้อมูลเกี่ยวกับภาพยนตร์ นักแสดง ทีมทำงาน และอื่นๆ นอกจากนี้ยังมีคุณสมบัติที่ช่วยในการดึงข้อมูลจาก API ภายนอกและจัดเก็บลงในฐานข้อมูล
 
@@ -77,6 +77,7 @@
 
 6. ทดสอบ Endpoint ของ API
    - เข้า [http://localhost:5000/getmovies](http://localhost:5000/getmovies) หรือ endpoint อื่นๆ
+   - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/4ffdfdd2-6f0a-47c9-bef6-93c8eea63faf)
 
 ## ไฟล์
 
