@@ -3,7 +3,6 @@ from config import BASE_IMAGE_URL, API_READ_ACCESS_TOKEN
 import mysql.connector
 import requests
 
-# Add functions to insert/update records in the database
 HEADERS = {'Authorization': f'Bearer {API_READ_ACCESS_TOKEN}'}
 
 def get_genres_data():
@@ -12,10 +11,10 @@ def get_genres_data():
     genre = response.json().get('genres', [])
     return genre
 
-def get_movies_data():
+def get_movies_data(start_p, stop_p):
     all_results = []
 
-    for i in range(5, 6):
+    for i in range(start_p, stop_p + 1):
         url = f"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page={i}&sort_by=popularity.desc"
         response = requests.get(url, headers=HEADERS)
 
@@ -190,7 +189,7 @@ def process_movie(cursor, conn, movie):
             print("Movie:", movie_id, "Writer:", writer_id)
 
         enable_foreign_key_checks(cursor, conn)
-        conn.commit()
+        commit_and_close(conn)
         print("Success")
 
     except Exception as e:

@@ -1,16 +1,12 @@
-FROM python:3
+FROM python:3.9-slim-buster
 
 WORKDIR /app
 
-COPY app.py ./backend
-COPY db.py ./backend
-COPY models.py ./backend
+COPY . .
 
-COPY requirements.txt ./backend
-RUN pip install --no-cache-dir -r ./backend/requirements.txt
+RUN  pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8000
+ENV FLASK_APP=app.py
 
-CMD [ "python", "app.py" ]
-
-
+CMD ["flask", "run", "--host", "0.0.0.0"]

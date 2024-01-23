@@ -1,5 +1,5 @@
-from flask import Flask, jsonify
-from db import get_database_connection
+from flask import Flask, jsonify, request
+from db import get_database_connection, commit_and_close
 from models import process_movie, get_movies_data
 import json
 
@@ -7,6 +7,8 @@ app = Flask(__name__)
 
 @app.route("/getmovies", methods=["GET"])
 def get_movies():
+    conn = get_database_connection()
+    cursor = conn.cursor(buffered=True)
     query_combined = """
     SELECT
     Movie.movie_id,
@@ -50,9 +52,13 @@ def get_movies():
         }
         movies.append(movie_data)
 
+    commit_and_close(conn)
     return jsonify({"results": movies})
+
 @app.route("/getcrews", methods=["GET"])
 def get_crews():
+    conn = get_database_connection()
+    cursor = conn.cursor(buffered=True)
     query_combined = """
     SELECT
         Movie.movie_id,
@@ -99,12 +105,15 @@ def get_crews():
         
         crews.append(movie_data) 
 
+    commit_and_close(conn)
     return jsonify({"results": crews})
 
 
 
 @app.route("/getactors", methods=["GET"])
 def get_actors():
+    conn = get_database_connection()
+    cursor = conn.cursor(buffered=True)
     query_combined = """
     SELECT
         Movie.movie_id,
@@ -148,11 +157,22 @@ def get_actors():
 
         actors.append(movie_data) 
 
+    commit_and_close(conn)
     return jsonify({"results": actors}) 
 
 @app.route("/fetchapitodb")
 def update_db():
-    movies_data = get_movies_data()
+    start_p = request.args.get('start_p', default=None, type=int)
+    stop_p = request.args.get('stop_p', default=None, type=int)
+
+    if start_p is None or stop_p is None:
+        return jsonify({"error": "Both start_p and stop_p parameters are required."})
+
+    conn = get_database_connection()
+    cursor = conn.cursor(buffered=True)
+    
+    movies_data = get_movies_data(start_p, stop_p)
+
     if movies_data:
         processed_movies = [process_movie(cursor, conn, movie) for movie in movies_data]
         return jsonify(processed_movies)
@@ -161,9 +181,12 @@ def update_db():
     return jsonify([])
 
 if __name__ == "__main__":
-    conn = get_database_connection()
-    if conn.is_connected():
-        print("Connect!")
-    cursor = conn.cursor(buffered=True)
-    
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
+
+
+@app.route("/", methods=["GET"])
+def say_hello():
+    return jsonify({"msg": "Hello from Flask"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True)

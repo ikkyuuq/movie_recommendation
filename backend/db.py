@@ -3,9 +3,9 @@ from config import HOST, DB_USER, DB_PASSWORD, DATABASE
 
 def get_database_connection():
     config = {
+        'host': HOST,
         'user': DB_USER,
         'password': DB_PASSWORD,
-        'host': HOST,
         'database': DATABASE,
         'connect_timeout': 5000,
     }
