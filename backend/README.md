@@ -76,10 +76,10 @@
      ```
 
 6. ทดสอบ Endpoint ของ API
-   - เข้า [http://localhost:5000/getmovies](http://localhost:5000/movies) หรือ endpoint อื่นๆ
-   - ตัวอย่างผลลัพธ์ของ Endpoint [http://localhost:5000/getmovies](http://localhost:5000/movies)
+   - เข้า [http://localhost:5000/movies](http://localhost:5000/movies) หรือ endpoint อื่นๆ
+   - ตัวอย่างผลลัพธ์ของ Endpoint [http://localhost:5000/movies](http://localhost:5000/movies)
    - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/ac20a428-27f8-4a0f-9ad7-5357574d22e8)
-   - ตัวอย่างผลลัพธ์ของ Endpoint [http://localhost:5000/getactors](http://localhost:5000/actors)
+   - ตัวอย่างผลลัพธ์ของ Endpoint [http://localhost:5000/actors](http://localhost:5000/actors)
    - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/f1fe1c12-0b15-4811-b7b9-944516fd27a2)
 
 ## ไฟล์
