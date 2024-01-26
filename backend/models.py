@@ -1,6 +1,8 @@
-from db import get_database_connection, commit_and_close, disable_foreign_key_checks, enable_foreign_key_checks
+from db import (
+    get_database_connection, commit_and_close,
+    disable_foreign_key_checks, enable_foreign_key_checks
+)
 from config import BASE_IMAGE_URL, API_READ_ACCESS_TOKEN
-import mysql.connector
 import requests
 
 HEADERS = {'Authorization': f'Bearer {API_READ_ACCESS_TOKEN}'}
@@ -8,25 +10,26 @@ HEADERS = {'Authorization': f'Bearer {API_READ_ACCESS_TOKEN}'}
 def get_genres_data():
     url = "https://api.themoviedb.org/3/genre/movie/list?language=en"
     response = requests.get(url, headers=HEADERS)
-    genre = response.json().get('genres', [])
-    return genre
+    genres = response.json().get('genres', [])
+    return genres
 
-def get_movies_data(start_p, stop_p):
+def get_movies_data(start_page, stop_page):
     all_results = []
 
-    for i in range(start_p, stop_p + 1):
-        url = f"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page={i}&sort_by=popularity.desc"
+    for page_num in range(start_page, stop_page + 1):
+        url = f"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page={page_num}&sort_by=popularity.desc"
         response = requests.get(url, headers=HEADERS)
 
         if response.status_code == 200:
             all_results.extend(response.json().get('results', []))
         else:
-            print(f"Error fetching data for page {i}: {response.status_code}")
+            print(f"Error fetching data for page {page_num}: {response.status_code}")
 
     return all_results
 
 def get_credit_data(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?language=en-US"
+    
     try:
         response = requests.get(url, headers=HEADERS)
 
@@ -35,7 +38,9 @@ def get_credit_data(movie_id):
             crew = response.json().get('crew', [])
             actors = filter_cast_members(cast, "Acting")
             directors = find_director(crew, "Directing", job="Director")
-            writers = filter_crew_members(crew, department="Writing", job="Writer") or filter_crew_members(crew, department="Writing", job="Screenplay") or filter_crew_members(crew, department="Writing")
+            writers = filter_crew_members(crew, department="Writing", job="Writer") or \
+                      filter_crew_members(crew, department="Writing", job="Screenplay") or \
+                      filter_crew_members(crew, department="Writing")
 
             return actors, directors, writers
         else:
@@ -99,7 +104,6 @@ def process_movie(cursor, conn, movie):
             VALUES (%s, %s, %s, %s, %s, %s)
         """, (director_id, director_fname, director_mname, director_lname, d_full_img, director_popular))
         print("Movie:", movie_id, "Director:", director_id)
-        
 
         # Process Movie
         movie_title = movie.get('title', "")

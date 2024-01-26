@@ -5,41 +5,44 @@ import json
 
 app = Flask(__name__)
 
-@app.route("/getmovies", methods=["GET"])
-def get_movies():
+@app.route("/movies", methods=["GET"])
+def get_movies_endpoint():
     conn = get_database_connection()
     cursor = conn.cursor(buffered=True)
+    
     query_combined = """
     SELECT
-    Movie.movie_id,
-    JSON_OBJECT(
-        'movie_title', Movie.movie_title,
-        'movie_overview', Movie.movie_overview,
-        'movie_img_url', Movie.movie_img_url,
-        'movie_rating', Movie.movie_rating,
-        'movie_popular', Movie.movie_popular,
-        'movie_release_date', Movie.movie_release_date,
-        'genres', JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'genre_id', Genre.genre_id,
-                'genre_title', Genre.genre_title
+        M.movie_id,
+        JSON_OBJECT(
+            'title', M.movie_title,
+            'overview', M.movie_overview,
+            'img_url', M.movie_img_url,
+            'rating', M.movie_rating,
+            'popular', M.movie_popular,
+            'release_date', M.movie_release_date,
+            'genres', JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', G.genre_id,
+                    'title', G.genre_title
+                )
             )
-        )
-    ) AS movie_detail
+        ) AS details
     FROM
-        Movie
+        Movie AS M
     LEFT JOIN
-        Movie_has_Genre ON Movie.movie_id = Movie_has_Genre.movie_id
+        Movie_has_Genre AS MG 
+        ON M.movie_id = MG.movie_id
     LEFT JOIN
-        Genre ON Movie_has_Genre.genre_id = Genre.genre_id
+        Genre AS G 
+        ON G.genre_id = MG.genre_id
     GROUP BY
-        Movie.movie_id,
-        Movie.movie_title,
-        Movie.movie_overview,
-        Movie.movie_img_url,
-        Movie.movie_rating,
-        Movie.movie_popular,
-        Movie.movie_release_date;
+        M.movie_id,
+        M.movie_title,
+        M.movie_overview,
+        M.movie_img_url,
+        M.movie_rating,
+        M.movie_popular,
+        M.movie_release_date;
     """
     cursor.execute(query_combined)
     result_set = cursor.fetchall()
@@ -47,51 +50,55 @@ def get_movies():
     movies = []
     for row in result_set:
         movie_data = {
-            "movie_id": row[0],
-            "movie_detail": json.loads(row[1])
+            "id": row[0],
+            "details": json.loads(row[1])
         }
         movies.append(movie_data)
 
     commit_and_close(conn)
     return jsonify({"results": movies})
 
-@app.route("/getcrews", methods=["GET"])
-def get_crews():
+@app.route("/crews", methods=["GET"])
+def get_crews_endpoint():
     conn = get_database_connection()
     cursor = conn.cursor(buffered=True)
+    
     query_combined = """
     SELECT
-        Movie.movie_id,
+        M.movie_id,
         JSON_OBJECT(
             'directors', JSON_OBJECT(
-                    'director_id', Director.director_id,
-                    'director_fname', Director.director_fname,
-                    'director_lname', Director.director_lname,
-                    'director_mname', Director.director_mname,
-                    'director_img_url', Director.director_img_url,
-                    'director_popular', Director.director_popular
+                    'id', D.director_id,
+                    'fname', D.director_fname,
+                    'lname', D.director_lname,
+                    'mname', D.director_mname,
+                    'img_url', D.director_img_url,
+                    'popular', D.director_popular
             ),
             'writers', JSON_ARRAYAGG(
                 JSON_OBJECT(
-                    'writer_id', Writer.writer_id,
-                    'writer_fname', Writer.writer_fname,
-                    'writer_lname', Writer.writer_lname,
-                    'writer_mname', Writer.writer_mname,
-                    'writer_img_url', Writer.writer_img_url,
-                    'writer_popular', Writer.writer_popular
+                    'id', W.writer_id,
+                    'fname', W.writer_fname,
+                    'lname', W.writer_lname,
+                    'mname', W.writer_mname,
+                    'img_url', W.writer_img_url,
+                    'popular', W.writer_popular
                 )
             )
         ) AS crews
     FROM
-        Movie
+        Movie AS M
     LEFT JOIN
-        Director ON Movie.director_id = Director.director_id
+        Director AS D 
+        ON M.director_id = D.director_id
     LEFT JOIN 
-        Movie_has_Writer ON Movie.movie_id = Movie_has_Writer.movie_id
+        Movie_has_Writer AS MW 
+        ON M.movie_id = MW.movie_id
     LEFT JOIN
-        Writer ON Writer.writer_id = Movie_has_Writer.writer_id
+        Writer AS W 
+        ON W.writer_id = MW.writer_id
     GROUP BY
-        Movie.movie_id
+        M.movie_id
     """
     cursor.execute(query_combined)
     result_set = cursor.fetchall()
@@ -99,7 +106,7 @@ def get_crews():
     crews = [] 
     for row in result_set:
         movie_data = {
-            "movie_id": row[0],
+            "id": row[0],
             "crews": json.loads(row[1])
         }
         
@@ -108,30 +115,33 @@ def get_crews():
     commit_and_close(conn)
     return jsonify({"results": crews})
 
-
-
-@app.route("/getactors", methods=["GET"])
-def get_actors():
+@app.route("/actors", methods=["GET"])
+def get_actors_endpoint():
     conn = get_database_connection()
     cursor = conn.cursor(buffered=True)
+    
     query_combined = """
     SELECT
-        Movie.movie_id,
+        M.movie_id,
         JSON_ARRAYAGG(
             JSON_OBJECT(
-                'actor_fname', Actor.actor_fname,
-                'actor_lname', Actor.actor_lname,
-                'actor_mname', Actor.actor_mname,
-                'actor_img_url', Actor.actor_img_url,
-                'actor_popular', Actor.actor_popular
+                'fname', A.actor_fname,
+                'lname', A.actor_lname,
+                'mname', A.actor_mname,
+                'img_url', A.actor_img_url,
+                'popular', A.actor_popular
             )
         ) AS actors
     FROM
-        Actor
-    LEFT JOIN Movie_has_Actor ON Movie_has_Actor.actor_id = Actor.actor_id
-    LEFT JOIN Movie ON Movie.movie_id = Movie_has_Actor.movie_id
+        Actor AS A
+    LEFT JOIN 
+        Movie_has_Actor AS MA 
+        ON A.actor_id = MA.actor_id
+    LEFT JOIN
+        Movie AS M
+        ON M.movie_id = MA.movie_id
     GROUP BY
-        Movie.movie_id;
+        M.movie_id;
     """
     cursor.execute(query_combined)
     result_set = cursor.fetchall()
@@ -139,7 +149,7 @@ def get_actors():
     actors = [] 
     for row in result_set:
         movie_data = {
-            "movie_id": row[0],
+            "id": row[0],
             "actors": [] 
         }
 
@@ -147,11 +157,11 @@ def get_actors():
 
         for actor_data in actors_json:
             actor = {
-                "actor_fname": actor_data["actor_fname"],
-                "actor_lname": actor_data["actor_lname"],
-                "actor_mname": actor_data["actor_mname"],
-                "actor_img_url": actor_data["actor_img_url"],
-                "actor_popular": actor_data["actor_popular"]
+                "fname": actor_data["fname"],
+                "lname": actor_data["lname"],
+                "mname": actor_data["mname"],
+                "img_url": actor_data["img_url"],
+                "popular": actor_data["popular"]
             }
             movie_data["actors"].append(actor)
 
@@ -160,8 +170,8 @@ def get_actors():
     commit_and_close(conn)
     return jsonify({"results": actors}) 
 
-@app.route("/fetchapitodb")
-def update_db():
+@app.route("/update-database", methods=["GET"])
+def update_database_endpoint():
     start_p = request.args.get('start_p', default=None, type=int)
     stop_p = request.args.get('stop_p', default=None, type=int)
 
@@ -180,13 +190,9 @@ def update_db():
     print("No Results Found!")
     return jsonify([])
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
 @app.route("/", methods=["GET"])
 def say_hello():
-    return jsonify({"msg": "Hello from Flask"})
+    return jsonify({"msg": "Hello from Movie Recommemdation Back-end!"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
