@@ -1,13 +1,9 @@
 "use client";
-import { number } from "prop-types";
 import DsineyPlus from "./assets/DsineyPlus";
 import Hub from "./assets/Hub";
 import MyList from "./assets/MyList";
 import Netflix from "./assets/Netflix";
 import Search from "./assets/Search";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect } from "react";
 import { useHorizontalScroll } from "./hooks";
 
 export default function Home() {
