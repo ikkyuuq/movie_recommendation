@@ -1,5 +1,5 @@
 "use client";
-import DsineyPlus from "./assets/DsineyPlus";
+import DisneyPlus from "./assets/DisneyPlus";
 import Hub from "./assets/Hub";
 import MyList from "./assets/MyList";
 import Netflix from "./assets/Netflix";
@@ -78,7 +78,7 @@ export default function Home() {
     },
     {
       text: "Disney+",
-      svg: <DsineyPlus />,
+      svg: <DisneyPlus />,
       href: "/disneyplus",
       status: "disabled",
     },
