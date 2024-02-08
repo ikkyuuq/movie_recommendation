@@ -79,7 +79,8 @@ def get_crews_endpoint():
     conn = get_database_connection()
     cursor = conn.cursor(buffered=True)
     
-    query_combined = """D
+    query_combined = """
+    SELECT
         M.movie_id,
         JSON_OBJECT(
             'directors', JSON_OBJECT(
