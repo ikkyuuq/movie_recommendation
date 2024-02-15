@@ -25,7 +25,10 @@ def get_movies_endpoint():
                     'id', G.genre_id,
                     'title', G.genre_title
                 )
-            )
+            ),
+            'yt_video_ids', (SELECT JSON_ARRAYAGG(YT.yt_video_id)
+                             FROM YouTubeVideo YT
+                             WHERE YT.movie_id = M.movie_id)
         ) AS details
     FROM
         Movie AS M
@@ -58,21 +61,6 @@ def get_movies_endpoint():
     commit_and_close(conn)
     return jsonify({"results": movies})
 
-@app.route("/movie/<int:movie_id>", methods=["GET"])
-def get_movie_by_id(movie_id):
-    conn = get_database_connection()
-    cursor = conn.cursor(dictionary=True)
-    
-    cursor.execute("SELECT * FROM Movie WHERE movie_id = %s", (movie_id,))
-    movie = cursor.fetchone()
-    yt_video_id = get_kinocheck_data(movie['movie_id'])
-    movie['yt_video_id'] = yt_video_id
-    
-    commit_and_close(conn)
-    if movie:
-        return jsonify(movie)
-    else:
-        return jsonify({"error": "Movie not found"}), 404
 
 @app.route("/crews", methods=["GET"])
 def get_crews_endpoint():

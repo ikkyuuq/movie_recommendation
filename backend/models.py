@@ -202,6 +202,15 @@ def process_movie(cursor, conn, movie):
                 ON DUPLICATE KEY UPDATE movie_id=movie_id
             """, (movie_id, writer_id))
             print("Movie:", movie_id, "Writer:", writer_id)
+        
+        yt_video_id = get_kinocheck_data(movie_id)
+        
+        if yt_video_id:
+            cursor.execute("""
+                REPLACE INTO YouTubeVideo (yt_video_id, movie_id)
+                VALUES (%s, %s)
+            """, (yt_video_id, movie_id))
+            print("Inserted Video_ID for Movie:", movie_id)
 
         enable_foreign_key_checks(cursor, conn)
         commit_and_close(conn)
