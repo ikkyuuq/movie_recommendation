@@ -13,6 +13,17 @@ def get_genres_data():
     genres = response.json().get('genres', [])
     return genres
 
+def get_kinocheck_data(tmdb_id):
+    url = f"https://api.kinocheck.com/movies?tmdb_id={tmdb_id}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        yt_video_id = data['trailer']['youtube_video_id']
+        return yt_video_id
+    else:
+        print(f"Error fetching data: {response.status_code}")
+        return None
+
 def get_movies_data(start_page, stop_page):
     all_results = []
 
