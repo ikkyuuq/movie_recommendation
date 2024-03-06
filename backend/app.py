@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from db import get_database_connection, commit_and_close
 from models import process_movie, get_movies_data , get_kinocheck_data
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/movies", methods=["GET"])
 def get_movies_endpoint():
