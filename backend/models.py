@@ -23,7 +23,7 @@ def get_kinocheck_data(tmdb_id):
     else:
         print(f"Error fetching data: {response.status_code}")
         return None
-
+    
 def get_movies_data(start_page, stop_page):
     all_results = []
 
@@ -207,7 +207,7 @@ def process_movie(cursor, conn, movie):
         
         if yt_video_id:
             cursor.execute("""
-                REPLACE INTO YouTubeVideo (yt_video_id, movie_id)
+                REPLACE INTO Trailer (trailer_id, movie_id)
                 VALUES (%s, %s)
             """, (yt_video_id, movie_id))
             print("Inserted Video_ID for Movie:", movie_id)
