@@ -61,7 +61,7 @@
    - นำ .sql เข้าไปใน container database
      ```bash
      docker cp schema.sql database:/tmp/schema.sql
-    ```
+     ```
 
    - เข้าถึง Docker mysql container
      ```bash
@@ -70,7 +70,6 @@
     
    - นำเข้าโครงสร้าง
      ```bash
-     cd tmp
      mysql -u root -p  < schema.sql
      ```
    - ป้อนรหัสผ่าน (รหัสผ่าน: moviedb@password)
