@@ -26,8 +26,14 @@
 
    - ดึงข้อมูลเกี่ยวกับทีมทำงาน
 
-4. **/update-database**
+4. **/updb?start_p=1&stop_p=500**
+   
    - ดึงข้อมูลจาก API ภายนอกและจัดเก็บในฐานข้อมูล
+  
+6. **/movie?tmdb_id=xxxx**
+   
+   - ดึงข้อมูลฉพาะหนังเรื่องๆนึงจาก Database โดยใช้ TMDB ID
+     
 
 ## Docker Usage
 
@@ -52,30 +58,30 @@
    ```
 
 4. นำเข้าโครงสร้างฐานข้อมูล
+   - นำ .sql เข้าไปใน container database
+     ```bash
+     docker cp schema.sql database:/tmp/schema.sql
+     ```
 
    - เข้าถึง Docker mysql container
      ```bash
      docker exec -it database bash
      ```
-   - เข้าถึง MySQL ใน Docker container
-     ```bash
-     mysql -u root -p
-     ```
-   - ป้อนรหัสผ่าน (รหัสผ่าน: moviedb@password)
+    
    - นำเข้าโครงสร้าง
      ```bash
      mysql -u root -p  < schema.sql
      ```
    - ป้อนรหัสผ่าน (รหัสผ่าน: moviedb@password)
 
-5. ดึงข้อมูลจาก API ภายนอกเพื่อเติมฐานข้อมูล
+6. ดึงข้อมูลจาก API ภายนอกเพื่อเติมฐานข้อมูล
 
    - กระทำคำสั่งต่อไปนี้ แทน `{page_to_start}` และ `{page_to_stop}` ด้วยช่วงหน้าที่ต้องการ
      ```bash
      localhost:5000/fetchapitodb?start_p={page_to_start}&stop_p={page_to_stop}
      ```
 
-6. ทดสอบ Endpoint ของ API
+7. ทดสอบ Endpoint ของ API
    - เข้า [http://localhost:5000/movies](http://localhost:5000/movies) หรือ endpoint อื่นๆ
    - ตัวอย่างผลลัพธ์ของ Endpoint [http://localhost:5000/movies](http://localhost:5000/movies)
    - ![image](https://github.com/ikkyuuq/movie_recommendation/assets/67925388/ac20a428-27f8-4a0f-9ad7-5357574d22e8)
