@@ -26,8 +26,8 @@ def get_movies_endpoint():
                     'title', G.genre_title
                 )
             ),
-            'yt_video_ids', (SELECT JSON_ARRAYAGG(YT.yt_video_id)
-                             FROM YouTubeVideo YT
+            'yt_video_ids', (SELECT JSON_ARRAYAGG(YT.trailer_id)
+                             FROM Trailer YT
                              WHERE YT.movie_id = M.movie_id)
         ) AS details
     FROM
@@ -174,7 +174,105 @@ def get_actors_endpoint():
     commit_and_close(conn)
     return jsonify({"results": actors}) 
 
-@app.route("/update-database", methods=["GET"])
+@app.route("/movie", methods=["GET"])
+def get_movie_by_id():
+    tmdb_id = request.args.get('tmdb_id', default=None, type=int)
+   
+    if tmdb_id is None:
+        return jsonify({"error": "Movie ID is cannot be None."})
+    
+    conn = get_database_connection()
+    cursor = conn.cursor(buffered=True)
+    
+    query_combined = """
+    SELECT 
+        JSON_OBJECT (
+            'id', M.movie_id,    
+            'title', M.movie_title,
+            'overview', M.movie_overview,
+            'img_url', M.movie_img_url,
+            'rating', M.movie_rating,
+            'popular', M.movie_popular,
+            'release_date', M.movie_release_date,
+            'genres', (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', G.genre_id,
+                        'title', G.genre_title
+                    )
+                )
+                FROM Movie_has_Genre AS MG
+                JOIN Genre AS G ON MG.genre_id = G.genre_id
+                WHERE MG.movie_id = M.movie_id
+            ),
+            'trailer_id', (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', YT.trailer_id
+                    )
+                )
+                FROM Trailer AS YT
+                WHERE YT.movie_id = M.movie_id
+            ),
+            'directors', (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', D.director_id,
+                        'fname', D.director_fname,
+                        'lname', D.director_lname,
+                        'mname', D.director_mname,
+                        'img_url', D.director_img_url,
+                        'popular', D.director_popular
+                    )
+                )
+                FROM Director AS D
+                WHERE D.director_id = M.director_id
+            ),
+            'actors', (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'fname', A.actor_fname,
+                        'lname', A.actor_lname,
+                        'mname', A.actor_mname,
+                        'img_url', A.actor_img_url,
+                        'popular', A.actor_popular
+                    )
+                )
+                FROM Movie_has_Actor AS MA
+                JOIN Actor AS A ON MA.actor_id = A.actor_id
+                WHERE MA.movie_id = M.movie_id
+            ),
+            'writers', (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', W.writer_id,
+                        'fname', W.writer_fname,
+                        'lname', W.writer_lname,
+                        'mname', W.writer_mname,
+                        'img_url', W.writer_img_url,
+                        'popular', W.writer_popular
+                    )
+                )
+                FROM Movie_has_Writer AS MW
+                JOIN Writer AS W ON MW.writer_id = W.writer_id
+                WHERE MW.movie_id = M.movie_id
+            )
+        ) AS results
+    FROM Movie AS M
+    WHERE M.movie_id = %s
+    """
+    
+    cursor.execute(query_combined, (tmdb_id,))
+    result_set = cursor.fetchall()
+    
+    data = []
+    for row in result_set:
+        data.append(json.loads(row[0]))
+
+    commit_and_close(conn)
+    return jsonify({"results": data})
+
+@app.route("/updb", methods=["GET"])
 def update_database_endpoint():
     start_p = request.args.get('start_p', default=None, type=int)
     stop_p = request.args.get('stop_p', default=None, type=int)
