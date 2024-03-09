@@ -136,8 +136,10 @@ def process_movie(cursor, conn, movie):
         genre_ids = set(movie.get('genre_ids', []))
 
         for genre in genres_data:
-            genre_ID = genre.get('id')
-            genre_name = genre.get('name')
+            ids = genre.get('id')
+            genre_ID = ids if ids else ""
+            title = genre.get('name')
+            genre_name = title if title else ""
 
             # Insert or update Genre
             cursor.execute("""
