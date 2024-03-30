@@ -1,10 +1,15 @@
 version: "3"
 services:
-  moviedb_server:
-    container_name: moviedb_server
+  server_1:
+    container_name: server_1
     build: .
     ports:
       - 5000:5000
+  server_2:
+    container_name: server_2
+    build: .
+    ports:
+      - 5001:5000
   database:
     image: mysql
     container_name: database
@@ -14,7 +19,6 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: moviedb@password
       MYSQL_DATABASE: moviedb
   phpmyadmin:

@@ -1,8 +1,8 @@
-from db import (
+from app.database.db import (
     get_database_connection, commit_and_close,
     disable_foreign_key_checks, enable_foreign_key_checks
 )
-from config import BASE_IMAGE_URL, API_READ_ACCESS_TOKEN
+from app.database.config import BASE_IMAGE_URL, API_READ_ACCESS_TOKEN
 import requests
 
 HEADERS = {'Authorization': f'Bearer {API_READ_ACCESS_TOKEN}'}
@@ -122,14 +122,14 @@ def process_movie(cursor, conn, movie):
         movie_popular = movie.get('popularity', 0)
         m_full_img = BASE_IMAGE_URL + movie_img if movie_img else ""
         movie_overview = movie.get('overview', "")
-        movie_release_date = movie.get('release_date', "")
+        movie_release = movie.get('release_date', "")
         movie_rating = movie.get('vote_average', 0)
 
         # Insert or update Movie
         cursor.execute("""
-            REPLACE INTO Movie (movie_id, movie_title, movie_overview, movie_release_date, movie_img_url, movie_rating, movie_popular, director_id)
+            REPLACE INTO Movie (movie_id, movie_title, movie_overview, movie_release, movie_img_url, movie_rating, movie_popular, director_id)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (movie_id, movie_title, movie_overview, movie_release_date, m_full_img, movie_rating, movie_popular, director_id))
+        """, (movie_id, movie_title, movie_overview, movie_release, m_full_img, movie_rating, movie_popular, director_id))
 
         # Process Genres
         genres_data = get_genres_data()

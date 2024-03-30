@@ -1,5 +1,5 @@
 import mysql.connector
-from config import HOST, DB_USER, DB_PASSWORD, DATABASE
+from app.database.config import HOST, DB_USER, DB_PASSWORD, DATABASE
 
 def get_database_connection():
     config = {
@@ -15,6 +15,10 @@ def commit_and_close(connection):
     if connection.is_connected():
         connection.commit()
         connection.close()
+        
+def execute_query_and_commit(conn, cursor, query, params=None):
+    cursor.execute(query, params)
+    commit_and_close(conn)
 
 def disable_foreign_key_checks(cursor, conn):
     DISABLE_FOREIGN_KEY_CHECKS_QUERY = "SET FOREIGN_KEY_CHECKS=0"
