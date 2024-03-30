@@ -38,56 +38,60 @@ function MyListPage() {
 
   return (
     <main className="h-screen flex justify-center items-center bg-[url('/bg-img.jpg')] bg-cover">
-      <div className="flex flex-col gap-10 max-w-7xl min-w-[1280px] bg-slate-200/30 p-10 rounded-3xl backdrop-blur-lg">
-        <Header setSearchContent={null} />
-        <div className="bg-white rounded-xl overflow-hidden">
-          <table className="table-fixed w-full">
-            <thead>
-              <tr className="*:border *:py-3">
-                <th>ID</th>
-                <th>Title</th>
-                <th>Release Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody className="overflow-y-scroll">
-              {lists == undefined || lists.length == 0 ? (
-                <tr>
-                  <td colSpan={4} className="text-center py-6">
-                    <div className="space-y-2">
-                      <p>Your favorite list is empty!</p>
-                      <Button variant="default">
-                        <Link href="/">Add New</Link>
-                      </Button>
-                    </div>
-                  </td>
+      <div className="xl:flex xl:justify-center w-full md:px-10 sm:px-5">
+        <div className="flex flex-col gap-10 max-w-7xl bg-slate-200/30 p-10 rounded-3xl backdrop-blur-lg">
+          <Header setSearchContent={null} />
+          <div className="bg-white rounded-xl overflow-hidden">
+            <table className="table-fixed w-full">
+              <thead>
+                <tr className="*:border *:py-3">
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Release Date</th>
+                  <th>Actions</th>
                 </tr>
-              ) : (
-                lists &&
-                lists.map((list) => (
-                  <tr
-                    key={list.favour_id}
-                    className="text-center *:border *:py-2"
-                  >
-                    <td>{list.movie_id}</td>
-                    <td>{list.movie_title}</td>
-                    <td>{new Date(list.movie_release_date).toDateString()}</td>
-                    <td className="space-x-2">
-                      <Link href={`/movie/${list.movie_id}`}>
-                        <Button variant="default">View</Button>
-                      </Link>
-                      <Button
-                        variant="destructive"
-                        onClick={() => onDelete(list.favour_id)}
-                      >
-                        Delete
-                      </Button>
+              </thead>
+              <tbody className="overflow-y-scroll">
+                {lists == undefined || lists.length == 0 ? (
+                  <tr>
+                    <td colSpan={4} className="text-center py-6">
+                      <div className="space-y-2">
+                        <p>Your favorite list is empty!</p>
+                        <Button variant="default">
+                          <Link href="/">Add New</Link>
+                        </Button>
+                      </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  lists &&
+                  lists.map((list) => (
+                    <tr
+                      key={list.favour_id}
+                      className="text-center *:border *:py-2"
+                    >
+                      <td>{list.movie_id}</td>
+                      <td>{list.movie_title}</td>
+                      <td>
+                        {new Date(list.movie_release_date).toDateString()}
+                      </td>
+                      <td className="space-x-2">
+                        <Link href={`/movie/${list.movie_id}`}>
+                          <Button variant="default">View</Button>
+                        </Link>
+                        <Button
+                          variant="destructive"
+                          onClick={() => onDelete(list.favour_id)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
