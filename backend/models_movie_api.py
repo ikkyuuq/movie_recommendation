@@ -1,8 +1,8 @@
-from app.database.db import (
+from db import (
     get_database_connection, commit_and_close,
     disable_foreign_key_checks, enable_foreign_key_checks
 )
-from app.database.config import BASE_IMAGE_URL, API_READ_ACCESS_TOKEN
+from config import API_READ_ACCESS_TOKEN, BASE_IMAGE_URL
 import requests
 
 HEADERS = {'Authorization': f'Bearer {API_READ_ACCESS_TOKEN}'}
@@ -107,7 +107,7 @@ def process_movie(cursor, conn, movie):
         director_mname = director_name_parts[2] if len(director_name_parts) > 2 else ""
         director_img_url = director.get('profile_path', "")
         director_popular = director.get('popularity', 0)
-        d_full_img = f"{BASE_IMAGE_URL}{director_img_url}" if director_img_url else ""
+        d_full_img = f"{os.getenv.BASE_IMAGE_URL}{director_img_url}" if director_img_url else ""
 
         # Insert or update Director
         cursor.execute("""
@@ -120,7 +120,7 @@ def process_movie(cursor, conn, movie):
         movie_title = movie.get('title', "")
         movie_img = movie.get('poster_path', "")
         movie_popular = movie.get('popularity', 0)
-        m_full_img = BASE_IMAGE_URL + movie_img if movie_img else ""
+        m_full_img = os.getenv.BASE_IMAGE_URL + movie_img if movie_img else ""
         movie_overview = movie.get('overview', "")
         movie_release = movie.get('release_date', "")
         movie_rating = movie.get('vote_average', 0)
@@ -164,7 +164,7 @@ def process_movie(cursor, conn, movie):
             actor_mname = actor_name_parts[2] if len(actor_name_parts) > 2 else ""
             actor_img_url = a.get('profile_path', "")
             actor_popular = a.get('popularity', 0)
-            a_full_img = f"{BASE_IMAGE_URL}{actor_img_url}" if actor_img_url else ""
+            a_full_img = f"{os.getenv.BASE_IMAGE_URL}{actor_img_url}" if actor_img_url else ""
 
             # Insert or update Actor
             cursor.execute("""
@@ -189,7 +189,7 @@ def process_movie(cursor, conn, movie):
             writer_mname = writer_name_parts[2] if len(writer_name_parts) > 2 else ""
             writer_img_url = w.get('profile_path', "")
             writer_popular = w.get('popularity', 0)
-            w_full_img = f"{BASE_IMAGE_URL}{writer_img_url}" if writer_img_url else ""
+            w_full_img = f"{os.getenv.BASE_IMAGE_URL}{writer_img_url}" if writer_img_url else ""
 
             # Insert or update Writer
             cursor.execute("""
