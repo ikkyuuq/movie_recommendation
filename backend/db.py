@@ -1,15 +1,30 @@
 import mysql.connector
-from app.database.config import HOST, DB_USER, DB_PASSWORD, DATABASE
+from urllib.parse import urlparse
 
 def get_database_connection():
     config = {
-        'host': HOST,
-        'user': DB_USER,
-        'password': DB_PASSWORD,
-        'database': DATABASE,
-        'connect_timeout': 5000,
+        'use_pure': True,
     }
-    return mysql.connector.connect(**config)
+    
+    conn = mysql.connector.connect(**config, **parse_database_url("mysql://ppat0rvqdjwpne0s:bbzl4wv26u9e2ia1@jsk3f4rbvp8ayd7w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/ua67pti3q7zksp05"))
+    return conn
+
+def parse_database_url(url):
+    parsed_url = urlparse(url)
+    
+    user = parsed_url.username
+    password = parsed_url.password
+    host = parsed_url.hostname
+    port = parsed_url.port
+    db = parsed_url.path.strip('/')
+    
+    return {
+        'host': host,
+        'port': port,
+        'user': user,
+        'password': password,
+        'database': db
+    }
 
 def commit_and_close(connection):
     if connection.is_connected():
