@@ -16,7 +16,7 @@ function MyListPage() {
     const res = await fetch(url);
     const data = await res.json();
     setLists(data.favour);
-  }, [user, lists]);
+  }, [lists]);
 
   useEffect(() => {
     if (user) {
@@ -40,7 +40,7 @@ function MyListPage() {
     <main className="h-screen flex justify-center items-center bg-[url('/bg-img.jpg')] bg-cover">
       <div className="xl:flex xl:justify-center w-full md:px-10 sm:px-5">
         <div className="flex flex-col gap-10 max-w-7xl bg-slate-200/30 p-10 rounded-3xl backdrop-blur-lg">
-          <Header setSearchContent={null} />
+          <Header searchDisable={true} />
           <div className="bg-white rounded-xl overflow-hidden">
             <table className="table-fixed w-full">
               <thead>

@@ -22,7 +22,7 @@ import { useUser } from "@clerk/nextjs";
 import CommentBox from "./comment";
 import { useForm } from "react-hook-form";
 
-function CommentSection({ movieId }: { movieId: number }) {
+function CommentSection({ movieId }: { movieId: number | undefined }) {
   const [comments, setComments] = useState<IComment[]>([]);
   const [commentsToShow, setCommentsToShow] = useState<number>(5);
 

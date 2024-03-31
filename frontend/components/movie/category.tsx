@@ -8,6 +8,10 @@ interface ICategory {
   setGenreSelect: any;
 }
 
+interface GenreObject {
+  [key: string]: string | undefined;
+}
+
 const genresList = [
   "Action",
   "Animation",
@@ -59,7 +63,7 @@ function Category({ setGenreSelect }: ICategory) {
         </button>
       </div>
       {genresList.map((genre) => {
-        const genreObject = iGenres.find((iGenre) =>
+        const genreObject: GenreObject | undefined = iGenres.find((iGenre) =>
           iGenre.hasOwnProperty(genre)
         );
         return (
@@ -76,7 +80,7 @@ function Category({ setGenreSelect }: ICategory) {
             }}
           >
             <button className="snap-start flex items-center gap-1">
-              <span className={`${genreObject[genre]} text-2xl`}></span>
+              <span className={`${genreObject?.[genre]} text-2xl`}></span>
               <h1 className="text-base whitespace-nowrap">{genre}</h1>
             </button>
           </div>

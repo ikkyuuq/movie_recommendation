@@ -3,6 +3,7 @@
 import React from "react";
 import TimeAgo from "./timeago";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 function CommentBox({
   comment,
@@ -53,8 +54,10 @@ function CommentBox({
         <div className="flex gap-2 items-center">
           <div className="space-y-2">
             <div className="flex gap-x-2 items-center">
-              <img
-                className="w-10 h-10 rounded-full"
+              <Image
+                width={40}
+                height={40}
+                className="rounded-full"
                 src={comment.img_url}
                 alt="user image"
               />

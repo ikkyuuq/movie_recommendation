@@ -7,7 +7,13 @@ import Netflix from "@/app/assets/Netflix";
 import Search from "@/app/assets/Search";
 import React, { useState } from "react";
 
-export default function index({ setSearchContent }) {
+export default function index({
+  setSearchContent,
+  searchDisable = false,
+}: {
+  setSearchContent?: React.Dispatch<React.SetStateAction<string>>;
+  searchDisable?: boolean;
+}) {
   const navItems = [
     {
       text: "All+",
@@ -41,7 +47,9 @@ export default function index({ setSearchContent }) {
       <ul className="flex items-center gap-1 text-white text-base min-w-[500px]">
         {search ? (
           <input
-            onChange={(e) => setSearchContent(e.target.value)}
+            onChange={(e) =>
+              setSearchContent && setSearchContent(e.target.value)
+            }
             type="text"
             placeholder="Search for movies..."
             className="flex py-1 px-5 rounded-full bg-slate-500 text-white placeholder-white/70"
@@ -73,6 +81,7 @@ export default function index({ setSearchContent }) {
         <div className="flex gap-1 h-full">
           <span className="border border-y h-full opacity-30"></span>
           <button
+            disabled={searchDisable}
             onClick={() => {
               setSearch((prevState) => !prevState);
             }}

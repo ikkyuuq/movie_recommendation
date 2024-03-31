@@ -9,6 +9,9 @@ const nextConfig = {
     COMMENT_URL: process.env.COMMENT_URL,
     UPDATEDB_URL: process.env.UPDATEDB_URL,
   },
+  images: {
+    domains: ["img.clerk.com"],
+  },
 };
 
 export default nextConfig;
