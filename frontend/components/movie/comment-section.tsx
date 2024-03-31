@@ -89,7 +89,7 @@ function CommentSection({ movieId }: { movieId: number | undefined }) {
   const onSubmit = async (values: z.infer<typeof CommentSchema>) => {
     setErrorMsg("");
     setSuccessMsg("");
-    const url = `http://localhost:5000/comment?movie_id=${movieId}`;
+    const url = `${process.env.COMMENT_URL}?movie_id=${movieId}`;
     const displayName = user?.firstName
       ?.concat(" ")
       .concat(user.lastName ? user.lastName : "");
