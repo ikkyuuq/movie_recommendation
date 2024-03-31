@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  swcMinify: false,
   env: {
     BASE_URL: process.env.BASE_URL,
     MOVIE_URL: process.env.MOVIE_URL,
