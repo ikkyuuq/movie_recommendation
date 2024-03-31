@@ -169,9 +169,7 @@ const Movie = ({ params }: { params: { id: number } }) => {
                         <p>
                           {movie?.genres &&
                             movie?.genres
-                              .map((genre, index) => (
-                                <p key={index}>{genre.title}</p>
-                              ))
+                              .map((genre) => genre.title)
                               .join(", ")}
                         </p>
                       </div>
