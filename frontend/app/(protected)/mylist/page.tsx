@@ -15,7 +15,7 @@ function MyListPage() {
     const res = await fetch(url);
     const data = await res.json();
     setLists(data.favour);
-  }, [lists]);
+  }, [user, lists]);
 
   useEffect(() => {
     if (user) {
