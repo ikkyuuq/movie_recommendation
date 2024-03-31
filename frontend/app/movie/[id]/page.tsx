@@ -82,7 +82,7 @@ const Movie = ({ params }: { params: { id: number } }) => {
 
   return (
     <>
-      <Header />
+      <Header searchDisable={true} />
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <article className="text-white">
@@ -146,8 +146,8 @@ const Movie = ({ params }: { params: { id: number } }) => {
                             movie.actors
                               .sort((a, b) => b.popular - a.popular)
                               .slice(0, 5)
-                              .map((actor) => (
-                                <p>
+                              .map((actor, index) => (
+                                <p key={index}>
                                   {actor.fname
                                     .concat(" ")
                                     .concat(actor.mname)
@@ -169,15 +169,17 @@ const Movie = ({ params }: { params: { id: number } }) => {
                         <p>
                           {movie?.genres &&
                             movie?.genres
-                              .map((genre) => genre.title)
+                              .map((genre, index) => (
+                                <p key={index}>{genre.title}</p>
+                              ))
                               .join(", ")}
                         </p>
                       </div>
                       <div className="space-y-2">
                         <h1 className="font-semibold">Directors</h1>
                         {movie?.directors &&
-                          movie.directors.map((director) => (
-                            <p>
+                          movie.directors.map((director, index) => (
+                            <p key={index}>
                               {director.fname
                                 .concat(" ")
                                 .concat(director.mname)
@@ -189,8 +191,8 @@ const Movie = ({ params }: { params: { id: number } }) => {
                       <div className="space-y-2">
                         <h1 className="font-semibold">Writers</h1>
                         {movie?.writers &&
-                          movie.writers.map((writer) => (
-                            <p>
+                          movie.writers.map((writer, index) => (
+                            <p key={index}>
                               {writer.fname
                                 .concat(" ")
                                 .concat(writer.mname)

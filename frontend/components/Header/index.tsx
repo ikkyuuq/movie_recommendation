@@ -9,7 +9,13 @@ import { Lobster_Two } from "next/font/google";
 
 const logo = Lobster_Two({ subsets: ["latin"], weight: ["400", "700"] });
 
-export default function index({ setSearchContent }) {
+export default function index({
+  setSearchContent,
+  searchDisable = false,
+}: {
+  setSearchContent?: React.Dispatch<React.SetStateAction<string>>;
+  searchDisable?: boolean;
+}) {
   const { isSignedIn, user } = useUser();
   const currentRoute = usePathname();
   return (
@@ -17,16 +23,19 @@ export default function index({ setSearchContent }) {
       <div className={`${logo.className} text-white font-bold text-3xl`}>
         Mlynx
       </div>
-      <Navbar setSearchContent={setSearchContent} />
+      <Navbar
+        setSearchContent={setSearchContent}
+        searchDisable={searchDisable}
+      />
       <div className="text-white">
         {isSignedIn ? (
           <div className="flex gap-x-2 items-center justify-end">
             <UserButton />
             <div>
               <h1>
-                {user.firstName
-                  ?.concat(" ")
-                  ?.concat(user.lastName?.substring(0, 4))}
+                {user.firstName && user.lastName
+                  ? `${user.firstName} ${user.lastName.substring(0, 4)}`
+                  : ""}
               </h1>
             </div>
           </div>
