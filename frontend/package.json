@@ -54,7 +54,7 @@
     "@iconify/tailwind": "^0.1.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.2.73",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
