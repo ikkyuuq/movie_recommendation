@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import Loading from "./loading";
 
 function MyListPage() {
   const [lists, setLists] = useState<IList[]>([]);
