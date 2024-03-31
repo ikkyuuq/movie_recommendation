@@ -67,7 +67,7 @@ export default function Movies({ data }: { data: { results: IMovie[] } }) {
   }, [genreSelect, ...movies]);
 
   useEffect(() => {
-    let filteredAndSortedMovies = [...sortedMovies];
+    let filteredAndSortedMovies = [...movies];
 
     if (searchContent !== "") {
       filteredAndSortedMovies = movies.filter((movie) =>
@@ -93,7 +93,7 @@ export default function Movies({ data }: { data: { results: IMovie[] } }) {
     }
 
     setSortedMovies(filteredAndSortedMovies);
-  }, [optionalFilter, searchContent, movies, ...sortedMovies]);
+  }, [optionalFilter, searchContent, movies]);
 
   return (
     <main className="h-screen flex justify-center items-center bg-[url('/bg-img.jpg')] bg-cover">
