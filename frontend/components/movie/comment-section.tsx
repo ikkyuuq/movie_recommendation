@@ -23,6 +23,8 @@ import CommentBox from "./comment";
 import { useForm } from "react-hook-form";
 
 function CommentSection({ movieId }: { movieId: number | undefined }) {
+  const { register, handleSubmit, errors } = useForm();
+
   const [comments, setComments] = useState<IComment[]>([]);
   const [commentsToShow, setCommentsToShow] = useState<number>(5);
 
