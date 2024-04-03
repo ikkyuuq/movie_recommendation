@@ -8,7 +8,7 @@
 
 - เข้าถึง API ได้ที่ [https://mlynx-server-845b26ee5ca0.herokuapp.com](https://mlynx-server-845b26ee5ca0.herokuapp.com).
 
-1. **/movies**
+1. **/movie**
 
    - ดึงข้อมูลเกี่ยวกับภาพยนตร์
 
